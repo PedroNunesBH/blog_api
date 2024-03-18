@@ -7,3 +7,7 @@ from .models import BlogUser
 class ListBlogUsers(generics.ListAPIView):
     queryset = BlogUser.objects.all()
     serializer_class = BlogUserSerializer
+
+
+class CreateBlogUser(generics.CreateAPIView):
+    serializer_class = BlogUserSerializer
