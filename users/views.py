@@ -11,3 +11,8 @@ class ListBlogUsers(generics.ListAPIView):
 
 class CreateBlogUser(generics.CreateAPIView):
     serializer_class = BlogUserSerializer
+
+
+class DetailUpdateAndDeleteBlogUser(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BlogUser.objects.all()
+    serializer_class = BlogUserSerializer
