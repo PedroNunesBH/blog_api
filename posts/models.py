@@ -10,3 +10,6 @@ class Post(models.Model):
                                on_delete=models.PROTECT,
                                related_name="post_author_user")  # ID do usuário autor do post
     content = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.title

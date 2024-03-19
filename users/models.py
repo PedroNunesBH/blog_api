@@ -8,3 +8,6 @@ class BlogUser(models.Model):
     password = models.CharField(max_length=30)
     register_date = models.DateTimeField(auto_now_add=True)
     date_of_birth = models.DateField()
+
+    def __str__(self):
+        return self.name
