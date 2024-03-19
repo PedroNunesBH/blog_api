@@ -7,3 +7,7 @@ from .models import Post
 class ListPosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+class CreatePost(generics.CreateAPIView):
+    serializer_class = PostSerializer
