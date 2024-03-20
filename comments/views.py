@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from rest_framework import generics
+from .serializers import CommentSerializer
+from .models import Comment
 
-# Create your views here.
+
+class ListComments(generics.ListAPIView):
+    queryset = Comment.objects.all().filter(status="Aprovado")  # Apenas lista os comentarios aprovados
+    serializer_class = CommentSerializer
