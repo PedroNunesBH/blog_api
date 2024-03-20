@@ -11,3 +11,8 @@ class ListComments(generics.ListAPIView):
 
 class CreateComments(generics.CreateAPIView):
     serializer_class = CommentSerializer
+
+
+class DetailUpdateAndDeleteComments(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
