@@ -21,3 +21,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostLikeAndDislike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_post_like_dislike")
+    post = models.ForeignKey(Post,
+                             on_delete=models.PROTECT,
+                             related_name="post_like_dislike")
+    like = models.BooleanField(default=False)
+    dislike = models.BooleanField(default=False)
