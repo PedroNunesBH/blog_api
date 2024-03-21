@@ -11,10 +11,10 @@ class ListComments(generics.ListAPIView):
 
 class CreateComments(generics.CreateAPIView):
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
 
 class DetailUpdateAndDeleteComments(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
