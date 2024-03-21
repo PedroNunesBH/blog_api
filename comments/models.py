@@ -20,7 +20,7 @@ class Comment(models.Model):
                                   related_name="comment_post")  # Post a qual o comentário foi feito
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
-    status = models.CharField(max_length=60, choices=STATUS_CHOICES, default="Aguardando Aprovação")
+    status = models.CharField(max_length=60, choices=STATUS_CHOICES, default="Pendente")
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
 
