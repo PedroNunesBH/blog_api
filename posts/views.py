@@ -5,7 +5,7 @@ from .models import Post
 
 
 class ListPosts(generics.ListAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.filter(status="Aprovado")
     serializer_class = PostSerializer
 
 
