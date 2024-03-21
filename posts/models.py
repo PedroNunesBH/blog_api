@@ -18,6 +18,8 @@ class Post(models.Model):
                                related_name="post_author_user")  # ID do usuário autor do post
     content = models.CharField(max_length=500)
     status = models.CharField(max_length=80, choices=STATUS_CHOICES, default="Pendente")
+    likes = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
