@@ -29,13 +29,20 @@ class PostLikeView(generics.RetrieveAPIView):
     def get_object(self):
         user_pk = self.request.user.id  # Captura a primary key/ id do usuario
         post_pk = self.kwargs.get('pk')  # Captura a primary key/id do post
-        like_exists = PostLikeAndDislike.objects.filter(user_id=user_pk, post_id=post_pk, like=True).exists()  # Procura por registro de um like do post pelo user
+        like_exists = PostLikeAndDislike.objects.filter(user_id=user_pk, post_id=post_pk, like=True, dislike=False).exists()  # Procura por registro de um like do post pelo user
+        print(like_exists)
+        dislike_exists = PostLikeAndDislike.objects.filter(user_id=user_pk, post_id=post_pk, dislike=True)
         if like_exists:  # Verifica a existencia
             return None
         else:
-            like = PostLikeAndDislike.objects.create(user_id=user_pk, post_id=post_pk, like=True)  # Cria o registro no BD
-            Post.objects.filter(id=post_pk).update(likes=models.F('likes') + 1)
-            return super().get_object()
+            if dislike_exists:
+                dislike_exists.update(dislike=False, like=True)
+                Post.objects.filter(id=post_pk).update(dislikes=models.F('dislikes') - 1, likes=models.F('likes') + 1)
+                return super().get_object()
+            else:
+                PostLikeAndDislike.objects.create(user_id=user_pk, post_id=post_pk, like=True)  # Cria o registro no BD
+                Post.objects.filter(id=post_pk).update(likes=models.F('likes') + 1)
+                return super().get_object()
 
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -54,13 +61,18 @@ class PostDislikeView(generics.RetrieveAPIView):
         user_pk = self.request.user.id
         post_pk = self.kwargs.get('pk')
         dislike_exists = PostLikeAndDislike.objects.filter(user=user_pk, post=post_pk, dislike=True)
-
+        like_exists = PostLikeAndDislike.objects.filter(user=user_pk, post=post_pk, like=True)
         if dislike_exists:
             return None
         else:
-            PostLikeAndDislike.objects.create(user_id=user_pk, post_id=post_pk, dislike=True, like=False)
-            Post.objects.filter(id=post_pk).update(dislikes=models.F('dislikes') + 1)
-            return super().get_object()
+            if like_exists:
+                like_exists.update(like=False, dislike=True)
+                Post.objects.filter(id=post_pk).update(likes=models.F('likes') - 1, dislikes=models.F('dislikes') + 1)
+                return super().get_object()
+            else:
+                PostLikeAndDislike.objects.create(user_id=user_pk, post_id=post_pk, dislike=True, like=False)
+                Post.objects.filter(id=post_pk).update(dislikes=models.F('dislikes') + 1)
+                return super().get_object()
 
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
