@@ -21,8 +21,6 @@ class Comment(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     status = models.CharField(max_length=60, choices=STATUS_CHOICES, default="Pendente")
-    likes = models.PositiveIntegerField(default=0)
-    dislikes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
