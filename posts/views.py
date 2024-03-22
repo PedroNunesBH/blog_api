@@ -81,3 +81,17 @@ class PostDislikeView(generics.RetrieveAPIView):
                                 status=400)  # Retorna um erro se o usuário já deu like
         else:
             return JsonResponse({"Success": "Dislike efetuado com sucesso"})
+
+
+class ListPostByCategorieView(generics.ListAPIView):  # Lista todos os posts da categoria especificada no endpoint
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        category = self.kwargs.get('category', None)  # Captura nos parametros do endpoint o valor de category passado
+        print(self.kwargs)
+        print(category)
+        if category is not None:
+            queryset = queryset.filter(category__icontains=category)  # Filtra pela categoria desejada
+            return queryset
+        return queryset
