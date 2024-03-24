@@ -11,7 +11,8 @@ STATUS_CHOICES = (
 CATEGORIES_CHOICES = (
     ("Psicologia", "Psicologia"),
     ("Auto Ajuda", "Auto Ajuda"),
-    ("Romance", "Romance")
+    ("Romance", "Romance"),
+    ("Ingles", "Ingles")
 )
 
 

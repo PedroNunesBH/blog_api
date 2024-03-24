@@ -1,9 +1,11 @@
 from django.http import JsonResponse
 from rest_framework import generics
+from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.db import models
 from .serializers import PostSerializer
 from .models import Post, PostLikeAndDislike
+from .models import CATEGORIES_CHOICES
 
 
 class ListPosts(generics.ListAPIView):
@@ -95,3 +97,19 @@ class ListPostByCategorieView(generics.ListAPIView):  # Lista todos os posts da 
             queryset = queryset.filter(category__icontains=category)  # Filtra pela categoria desejada
             return queryset
         return queryset
+
+
+class PostStatsView(views.APIView):
+
+    def get(self, request):
+        total_posts = Post.objects.all().count()  # Numero total de posts no blog
+        categories_stats = {}
+        categories_stats.update({"Total de Posts": total_posts})
+        for category in CATEGORIES_CHOICES:
+            categories_stats.update({category[0]: 0})
+        for category in categories_stats.keys():
+            total_posts = Post.objects.filter(category=category).count()
+            categories_stats[category] = total_posts
+        return JsonResponse(categories_stats, status=200)
+
+
