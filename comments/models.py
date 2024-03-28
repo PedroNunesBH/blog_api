@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import BlogUser
+from django.contrib.auth.models import User
 from posts.models import Post
 
 
@@ -11,7 +11,7 @@ STATUS_CHOICES = (
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(BlogUser,
+    author = models.ForeignKey(User,
                                on_delete=models.PROTECT,
                                related_name="author_user")  # Usuário autor do comentário
     date = models.DateTimeField(auto_now_add=True)

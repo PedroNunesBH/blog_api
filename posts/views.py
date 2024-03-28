@@ -91,8 +91,6 @@ class ListPostByCategorieView(generics.ListAPIView):  # Lista todos os posts da 
     def get_queryset(self):
         queryset = Post.objects.all()
         category = self.kwargs.get('category', None)  # Captura nos parametros do endpoint o valor de category passado
-        print(self.kwargs)
-        print(category)
         if category is not None:
             queryset = queryset.filter(category__icontains=category)  # Filtra pela categoria desejada
             return queryset
@@ -102,14 +100,17 @@ class ListPostByCategorieView(generics.ListAPIView):  # Lista todos os posts da 
 class PostStatsView(views.APIView):
 
     def get(self, request):
-        total_posts = Post.objects.all().count()  # Numero total de posts no blog
+        total_posts = Post.objects.filter(status="Aprovado").count()  # Numero total de posts no blog (aprovados)
         categories_stats = {}
         categories_stats.update({"Total de Posts": total_posts})
         for category in CATEGORIES_CHOICES:
             categories_stats.update({category[0]: 0})
         for category in categories_stats.keys():
-            total_posts = Post.objects.filter(category=category).count()
-            categories_stats[category] = total_posts
+            if category == "Total de Posts":
+                pass
+            else:
+                total_posts_by_category = Post.objects.filter(category=category, status="Aprovado").count()
+                categories_stats[category] = total_posts_by_category
         return JsonResponse(categories_stats, status=200)
 
 
