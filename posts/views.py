@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from django.db import models
 from .serializers import PostSerializer
 from .models import Post, PostLikeAndDislike
 from .models import CATEGORIES_CHOICES

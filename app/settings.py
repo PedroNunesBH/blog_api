@@ -132,7 +132,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # Configura a classe throttle para usuarios anonimos em tds views
+        'rest_framework.throttling.UserRateThrottle',  # Configura a classe throttle para usuarios autenticados
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '30/day',  # Limita os usuarios anonimos a 30 solicitações diárias
+        'user': '300/day',  # Limita os usuarios autenticados a 300 solicitações diárias
+    }
 }
 
 SIMPLE_JWT = {
