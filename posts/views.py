@@ -2,19 +2,16 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from django.db import models
 from .serializers import PostSerializer
 from .models import Post, PostLikeAndDislike
 from .models import CATEGORIES_CHOICES
 
 
-class ListPosts(generics.ListAPIView):
+class ListAndCreatePosts(generics.ListCreateAPIView):
     queryset = Post.objects.filter(status="Aprovado")
     serializer_class = PostSerializer
-
-
-class CreatePost(generics.CreateAPIView):
-    serializer_class = PostSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class DetailUpdateAndDeletePost(generics.RetrieveUpdateDestroyAPIView):
@@ -111,5 +108,4 @@ class PostStatsView(views.APIView):
                 total_posts_by_category = Post.objects.filter(category=category, status="Aprovado").count()
                 categories_stats[category] = total_posts_by_category
         return JsonResponse(categories_stats, status=200)
-
 

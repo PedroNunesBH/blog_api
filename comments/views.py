@@ -4,14 +4,10 @@ from .serializers import CommentSerializer
 from .models import Comment
 
 
-class ListComments(generics.ListAPIView):
+class ListAndCreateComments(generics.ListCreateAPIView):
     queryset = Comment.objects.all().filter(status="Aprovado")  # Apenas lista os comentarios aprovados
     serializer_class = CommentSerializer
-
-
-class CreateComments(generics.CreateAPIView):
-    serializer_class = CommentSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class DetailUpdateAndDeleteComments(generics.RetrieveUpdateDestroyAPIView):
